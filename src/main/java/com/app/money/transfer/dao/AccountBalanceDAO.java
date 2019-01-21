@@ -1,10 +1,11 @@
 package com.app.money.transfer.dao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.json.JSONObject;
 
-import com.app.money.transfer.exception.AccountBalanceException;
 import com.app.money.transfer.exception.InvalidUserIdException;
 import com.app.money.transfer.exception.UncaughtException;
 import com.app.money.transfer.model.AccountBalance;
@@ -14,42 +15,44 @@ public class AccountBalanceDAO {
 
 	static String LOGPREFIX = "AccountBalanceDAO |";
 
-	public AccountBalance getAccountBalance(String userid) {
+	public ArrayList<AccountBalance> getAccountBalance(String userid) {
 
 		LOGPREFIX = LOGPREFIX + " getAccountBalance";
-		AccountBalance accountBalanceObj = new AccountBalance();
-
+		ArrayList<AccountBalance> accountBalanceArr = new ArrayList<AccountBalance>();
+		
+		
 		try {
 
-			if (TransactionDAO.userIdChashMap.get(userid) == null) {
+			if (InitializeDB.userIdChashMap.get(userid) == null) {
 
 				throw new InvalidUserIdException("INVALID_USER_ID");
 
 			} else {
 
 				// Fetch the account id for the given user
-				BankDetails bankDetails = TransactionDAO.userIdChashMap.get(userid);
-				String accountId = bankDetails.getAccountId();
-				System.out.println(LOGPREFIX + " Account Id::" + accountId);
+				ArrayList<BankDetails> bankDetails = InitializeDB.userIdChashMap.get(userid);
+				
+				Iterator<BankDetails> itr = bankDetails.iterator();
+				while(itr.hasNext()) {
+					BankDetails bDetailsTempObj = itr.next();
+					String accountId = bDetailsTempObj.getAccountId();
+					System.out.println(LOGPREFIX + " Account Id::" + accountId);
 
-				if (TransactionDAO.bankBalance.get(accountId) == null) {
-
-					throw new AccountBalanceException("BALANCE_RETRIEVAL_FAILURE");
-					
-				} else {
 					// Once account ID is there , fetch the account balance
-					BigDecimal accountBalance = TransactionDAO.bankBalance.get(accountId);
+					BigDecimal accountBalance = InitializeDB.bankBalance.get(accountId);
 					System.out.println(LOGPREFIX + " Account Balance::" + accountBalance);
-
+					
 					// Prepare the response
-					accountBalanceObj.setAccountId(accountId);
-					accountBalanceObj.setAccountbalance(accountBalance.toString());
-
-					// print the response before return
-					JSONObject accBalanceRespObj = new JSONObject(accountBalanceObj);
-					System.out.println(LOGPREFIX + " |Account Balance response::" + accBalanceRespObj);
-
+					AccountBalance accBalanceObj = new AccountBalance();
+					accBalanceObj.setAccountId(accountId);
+					accBalanceObj.setAccountbalance(accountBalance.toString());
+					
+					accountBalanceArr.add(accBalanceObj);
 				}
+				
+				// print the response before return
+				JSONObject accBalanceRespObj = new JSONObject(accountBalanceArr);
+				System.out.println(LOGPREFIX + " |Account Balance response::" + accBalanceRespObj);
 			}
 
 		} catch (Exception e) {
@@ -61,6 +64,6 @@ public class AccountBalanceDAO {
 			else
 				throw new UncaughtException(e.toString());
 		}
-		return accountBalanceObj;
+		return accountBalanceArr;
 	}
 }

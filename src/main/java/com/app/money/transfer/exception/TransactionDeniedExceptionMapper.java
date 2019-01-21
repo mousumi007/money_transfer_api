@@ -9,16 +9,16 @@ import javax.ws.rs.ext.Provider;
 import com.app.money.transfer.model.ErrorMessage;
 
 @Provider
-public class AccountBalanceExceptionMapper implements ExceptionMapper<AccountBalanceException>{
+public class TransactionDeniedExceptionMapper implements ExceptionMapper<TransactionDeniedException>{
 
 	static String LOGPREFIX = "AccountBalanceExceptionMapper |";
 
 	@Override
-	public Response toResponse(AccountBalanceException exception) {
+	public Response toResponse(TransactionDeniedException exception) {
 		
 		ErrorMessage error = new ErrorMessage(exception.getMessage());
 
-		return Response.status(Status.NOT_FOUND).entity(error).type(MediaType.APPLICATION_JSON).build();
+		return Response.status(Status.FORBIDDEN).entity(error).type(MediaType.APPLICATION_JSON).build();
 	}
 	
 }

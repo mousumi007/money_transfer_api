@@ -4,7 +4,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
-import com.app.money.transfer.dao.TransactionDAO;
+import com.app.money.transfer.dao.InitializeDB;
 
 import java.io.IOException;
 import java.net.URI;
@@ -48,7 +48,7 @@ public class Main {
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
         
-        System.out.println(LOGPREFIX + TransactionDAO.initializeDAO());
+        System.out.println(LOGPREFIX + InitializeDB.initializeDB());
         System.in.read();
         server.stop();
     }

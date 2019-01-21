@@ -1,5 +1,7 @@
 package com.app.money.transfer.services;
 
+import java.util.ArrayList;
+
 import org.json.JSONObject;
 
 import com.app.money.transfer.dao.AccountBalanceDAO;
@@ -11,11 +13,11 @@ public class AccountDetailsServices {
 
 	static String LOGPREFIX = "AccountDetailsServices |";
 
-	public AccountBalance accountDetailsServices(String userid) {
+	public ArrayList<AccountBalance> accountDetailsServices(String userid) {
 		
 		LOGPREFIX = LOGPREFIX + " accountDetailsServices";
 		
-		AccountBalance accountBalanceObj = new AccountBalance();
+		ArrayList<AccountBalance> accountBalanceObj = new ArrayList<AccountBalance>();
 		
 		try {
 

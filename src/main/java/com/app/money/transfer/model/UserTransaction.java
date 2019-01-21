@@ -1,9 +1,11 @@
 package com.app.money.transfer.model;
 
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserTransaction {
 
 	@NotNull(message = "userId cannot be null")

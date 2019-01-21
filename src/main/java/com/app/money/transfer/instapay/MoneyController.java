@@ -1,5 +1,7 @@
 package com.app.money.transfer.instapay;
 
+import java.util.ArrayList;
+
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -29,11 +31,11 @@ public class MoneyController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/user/{userid}")
-	public AccountBalance userAccountBalanceDetails(@PathParam("userid") String userid) {
+	public ArrayList<AccountBalance> userAccountBalanceDetails(@PathParam("userid") String userid) {
 
 		LOGPREFIX = LOGPREFIX + " userAccountBalanceDetails";
 		
-		AccountBalance accountBalanceObj = new AccountBalance();
+		ArrayList<AccountBalance> accountBalanceObj = new ArrayList<AccountBalance>();
 		
 		try {
 			System.out.println(LOGPREFIX + " |userid::" + userid);
